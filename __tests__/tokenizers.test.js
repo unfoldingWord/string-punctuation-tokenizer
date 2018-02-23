@@ -1,10 +1,12 @@
 /* eslint-env jest */
-import {
+import tokenizers from '../src/index';
+
+const {
   tokenize,
   tokenizeWithPunctuation,
   occurrenceInString,
   occurrencesInString,
-} from '../src/index';
+} = tokenizers;
 
 describe('Tokenizer', function() {
   it('tokenize() should return empty array for empty string', function() {

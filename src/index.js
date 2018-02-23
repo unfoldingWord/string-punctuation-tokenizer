@@ -5,7 +5,7 @@ import {
   occurrencesInString,
 } from './tokenizers';
 
-export {
+export default {
   tokenize,
   tokenizeWithPunctuation,
   occurrenceInString,
