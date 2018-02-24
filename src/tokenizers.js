@@ -19,16 +19,17 @@ export const tokenize = (string) => {
 /**
  * Tokenize a string into an array of words
  * @param {String} string - string to be tokenized
- * @param {Boolean} withWordOccurrence - include word occurrence or not.
+ * @param {Object} options - include word occurrence or not.
+ *        withWordOccurrence <boolean>
  * @return {Array} - array of tokenized words/strings
  */
-export const tokenizeWithPunctuation = (string, withWordOccurrence) => {
+export const tokenizeWithPunctuation = (string, options) => {
   const _tokens = classifyTokens(string, tokenizerOptions);
   const tokens = _tokens.filter((token) => token.type === 'word' || token.type === 'punctuation')
     .map((token, index) => {
       const occurrences = occurrencesInString(string, token.token);
       const occurrence = occurrenceInString(string, index, token.token);
-      if (withWordOccurrence) {
+      if (options && options.withWordOccurrence) {
         return {
           word: token.token,
           type: token.type,
