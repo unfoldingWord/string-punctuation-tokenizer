@@ -25,5 +25,5 @@ let words = stringTokenizer.tokenizeWithPunctuation('Hello world, my name is Man
 var words = stringTokenizer.tokenize('Hello world, my name is Manny!');
 // or ES6 
 let words = stringTokenizer.tokenize('Hello world, my name is Manny!');
-// words = ["Hello", "world,", "my", "name", "is", "Manny!"]
+// words = ["Hello", "world", "my", "name", "is", "Manny"]
 ```
