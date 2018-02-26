@@ -3,6 +3,9 @@ import {
   tokenizeWithPunctuation,
   occurrenceInString,
   occurrencesInString,
+  word,
+  punctuation,
+  whitespace,
 } from './tokenizers';
 
 import {
@@ -19,4 +22,7 @@ export default {
   selectionArray,
   spliceStringOnRanges,
   selectionsToRanges,
+  word,
+  punctuation,
+  whitespace,
 };
