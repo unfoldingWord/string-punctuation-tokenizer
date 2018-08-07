@@ -9,7 +9,7 @@ import {
 import {
   occurrenceInString,
   occurrencesInString,
-} from './tokenizers';
+} from './occurrences';
 
 import {
   selectionArray,
