@@ -1,6 +1,6 @@
 {
   "name": "string-punctuation-tokenizer",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Small library that provides functions to tokenize a string into an array of words with or without punctuation",
   "main": "lib/index.js",
   "scripts": {

@@ -1,12 +1,15 @@
 import {
   tokenize,
   tokenizeWithPunctuation,
-  occurrenceInString,
-  occurrencesInString,
   word,
   punctuation,
   whitespace,
 } from './tokenizers';
+
+import {
+  occurrenceInString,
+  occurrencesInString,
+} from './occurrences';
 
 import {
   selectionArray,

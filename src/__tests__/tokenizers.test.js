@@ -1,11 +1,9 @@
 /* eslint-env jest */
-import tokenizers from '../src/index';
+import * as tokenizers from '../tokenizers';
 
 const {
   tokenize,
   tokenizeWithPunctuation,
-  occurrenceInString,
-  occurrencesInString,
 } = tokenizers;
 
 describe('Tokenizer', function() {
@@ -117,60 +115,12 @@ describe('tokenizeWithPunctuation', function() {
   // });
 });
 
-describe('occurrenceInString', function() {
-  it('should return occurrence for first of two', function() {
-    const string = 'a ab a';
-    const substring = 'a';
-    const index = 0;
-    const expected = 1;
-    const output = occurrenceInString(string, index, substring);
-    expect(output).toEqual(expected);
-  });
-  it('should return occurrence for second of two', function() {
-    const string = 'a ab a';
-    const substring = 'a';
-    const index = 2;
-    const expected = 2;
-    const output = occurrenceInString(string, index, substring);
-    expect(output).toEqual(expected);
-  });
-  it('should return occurrence for second of three', function() {
-    const string = 'a ab a bac a';
-    const substring = 'a';
-    const index = 2;
-    const expected = 2;
-    const output = occurrenceInString(string, index, substring);
-    expect(output).toEqual(expected);
-  });
-});
 
-describe('occurrencesInString', function() {
-  it('should return occurrences for none', function() {
-    const string = 'ab';
-    const substring = 'a';
-    const expected = 0;
-    const output = occurrencesInString(string, substring);
-    expect(output).toEqual(expected);
-  });
-  it('should return occurrences for one', function() {
-    const string = 'a ab';
-    const substring = 'a';
-    const expected = 1;
-    const output = occurrencesInString(string, substring);
-    expect(output).toEqual(expected);
-  });
-  it('should return occurrences for two', function() {
-    const string = 'a ab a';
-    const substring = 'a';
-    const expected = 2;
-    const output = occurrencesInString(string, substring);
-    expect(output).toEqual(expected);
-  });
-  it('should return occurrences for three', function() {
-    const string = 'a ab a bac a';
-    const substring = 'a';
-    const expected = 3;
-    const output = occurrencesInString(string, substring);
-    expect(output).toEqual(expected);
+describe('Indic Languages Issues', function() {
+  it('\\u200D ZERO WIDTH JOINER', function() {
+    const string = 'अब्राहम की सन्‍तान, दाऊद की सन्‍तान, यीशु मसीह की वंशावली।';
+    const tokens = tokenize(string);
+    const expected = ['अब्राहम', 'की', 'सन्‍तान', 'दाऊद', 'की', 'सन्‍तान', 'यीशु', 'मसीह', 'की', 'वंशावली'];
+    expect(tokens).toEqual(expected);
   });
 });
