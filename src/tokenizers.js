@@ -4,7 +4,8 @@ import {occurrenceInString, occurrencesInString} from './occurrences';
 export const word = xRegExp('[\\pL\\pM\\u200D]+', '');
 export const punctuation = xRegExp('(^\\p{P}|[<>]{2})', '');
 export const whitespace = /\s+/;
-const tokenizerOptions = {word, whitespace, punctuation};
+export const number = /\d+/;
+const tokenizerOptions = {word, whitespace, punctuation, number};
 
 /**
  * Tokenize a string into an array of words
@@ -12,8 +13,9 @@ const tokenizerOptions = {word, whitespace, punctuation};
  * @return {Array} - array of tokenized words/strings
  */
 export const tokenize = (string) => {
+  const tokenTypes = ['word', 'number'];
   const _tokens = classifyTokens(string, tokenizerOptions);
-  const tokens = _tokens.filter((token) => token.type === 'word')
+  const tokens = _tokens.filter((token) => tokenTypes.includes(token.type))
     .map((token) => token.token);
   return tokens;
 };
@@ -25,8 +27,9 @@ export const tokenize = (string) => {
  * @return {Array} - array of tokenized words/strings
  */
 export const tokenizeWithPunctuation = (string, options) => {
+  const tokenTypes = ['word', 'number', 'punctuation'];
   const _tokens = classifyTokens(string, tokenizerOptions);
-  const tokens = _tokens.filter((token) => token.type === 'word' || token.type === 'punctuation')
+  const tokens = _tokens.filter((token) => tokenTypes.includes(token.type))
     .map((token, index) => {
       const occurrences = occurrencesInString(string, token.token);
       const occurrence = occurrenceInString(string, index, token.token);
