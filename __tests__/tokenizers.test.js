@@ -39,6 +39,18 @@ describe('Tokenizer', function() {
     const expected = ['asdf', 'qwerty'];
     expect(tokens).toEqual(expected);
   });
+  it('tokenize() should handle numbers with string', function() {
+    const string = 'sdkk 123, aksj- 213 ,000 qwerty 1';
+    const tokens = tokenize(string);
+    const expected = ['sdkk', '123', 'aksj', '213', '000', 'qwerty', '1'];
+    expect(tokens).toEqual(expected);
+  });
+  it('tokenize() should return ["asdf", "qwerty"] array for "asdf, qwerty." string', function() {
+    const string = 'asdf, qwerty.';
+    const tokens = tokenize(string);
+    const expected = ['asdf', 'qwerty'];
+    expect(tokens).toEqual(expected);
+  });
   it('should handle arabic string', function() {
     const string = 'لِأَنَّهُ لِمَنْ مِنَ ٱلْمَلَائِكَةِ قَالَ قَطُّ: «أَنْتَ ٱبْنِي، أَنَا ٱلْيَوْمَ وَلَدْتُكَ»؟ وَأَيْضًا: «أَنَا أَكُونُلَهُ أَبًا، وَهُوَ يَكُونُ لِيَ ٱبْنًا»؟';
     const tokens = tokenize(string);
@@ -95,6 +107,12 @@ describe('tokenizeWithPunctuation', function() {
     const string = 'Ta kome od anđela ikad reče: Ti si sin moj, danas te rodih; ili pak: Ja ću njemu biti otac, a on će meni biti sin.';
     const tokens = tokenizeWithPunctuation(string);
     const expected = ['Ta', 'kome', 'od', 'anđela', 'ikad', 'reče', ':', 'Ti', 'si', 'sin', 'moj', ',', 'danas', 'te', 'rodih', ';', 'ili', 'pak', ':', 'Ja', 'ću', 'njemu', 'biti', 'otac', ',', 'a', 'on', 'će', 'meni', 'biti', 'sin', '.'];
+    expect(tokens).toEqual(expected);
+  });
+  it('should handle punctuation in croatian string with numbers', function() {
+    const string = 'Ta kome od 121 anđela ikad reče: Ti si sin moj,  12323 danas te rodih; ili pak: Ja ću njemu biti o 12039 tac, a on će meni biti sin.';
+    const tokens = tokenizeWithPunctuation(string);
+    const expected = ['Ta', 'kome', 'od', '121', 'anđela', 'ikad', 'reče', ':', 'Ti', 'si', 'sin', 'moj', ',', '12323', 'danas', 'te', 'rodih', ';', 'ili', 'pak', ':', 'Ja', 'ću', 'njemu', 'biti', 'o', '12039', 'tac', ',', 'a', 'on', 'će', 'meni', 'biti', 'sin', '.'];
     expect(tokens).toEqual(expected);
   });
   it('should handle punctuation in kannada string', function() {
