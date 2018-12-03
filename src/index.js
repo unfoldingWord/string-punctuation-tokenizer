@@ -4,7 +4,7 @@ import {
   word,
   punctuation,
   whitespace,
-  number,
+  number_,
 } from './tokenizers';
 
 import {
@@ -29,5 +29,5 @@ export default {
   word,
   punctuation,
   whitespace,
-  number,
+  number: number_,
 };
