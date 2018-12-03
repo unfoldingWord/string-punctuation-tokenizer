@@ -6,6 +6,7 @@
   "scripts": {
     "test": "eslint ./src ./index.js && jest",
     "fix": "eslint ./src ./index.js --fix",
+    "build": "babel ./src -d ./lib",
     "compile": "rimraf lib && babel src/ -d lib/",
     "prebuild": "rm -rf ./lib",
     "prepare": "if [ ! -d './lib/' ]; then npm run build; fi",
