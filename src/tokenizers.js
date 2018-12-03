@@ -5,7 +5,7 @@ export const word = xRegExp('[\\pL\\pM\\u200D]+', '');
 export const punctuation = xRegExp('(^\\p{P}|[<>]{2})', '');
 export const whitespace = /\s+/;
 export const number = /\d+/;
-export const number_ = xRegExp(number, '');
+export const number_ = xRegExp(number);
 const tokenizerOptions = {word, whitespace, punctuation, number};
 
 /**
