@@ -1,13 +1,17 @@
 {
   "name": "string-punctuation-tokenizer",
-  "version": "0.9.1",
+  "version": "0.9.3",
   "description": "Small library that provides functions to tokenize a string into an array of words with or without punctuation",
   "main": "lib/index.js",
   "scripts": {
     "test": "eslint ./src ./index.js && jest",
     "fix": "eslint ./src ./index.js --fix",
+    "build": "babel ./src -d ./lib",
     "compile": "rimraf lib && babel src/ -d lib/",
-    "prepublish": "npm run compile"
+    "prebuild": "rm -rf ./lib",
+    "prepare": "if [ ! -d './lib/' ]; then npm run build; fi",
+    "prepublish": "npm run compile",
+    "postpublish": "git tag v$npm_package_version && git push origin v$npm_package_version"
   },
   "jest": {
     "collectCoverageFrom": [
