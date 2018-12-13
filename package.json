@@ -49,6 +49,6 @@
     "eslint": "^4.18.1",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-jest": "^21.12.2",
-    "jest": "^22.4.2"
+    "jest": "^23.6.0"
   }
 }
