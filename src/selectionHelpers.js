@@ -1,4 +1,4 @@
-import {occurrencesInString} from './tokenizers';
+import {occurrencesInString} from './occurrences';
 /**
  * Splice string into array of ranges, flagging what is selected
  * @param {String} string - string.

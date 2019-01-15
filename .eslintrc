@@ -9,6 +9,7 @@
   "settings": {
   },
   "rules": {
+    "quotes": "off",
     "semi": [
       "error",
       "always",
