@@ -1,11 +1,30 @@
-## Greedy Examples:
+## Greedy Tokens
+The purpose of the `greedy token` is to keep a word together that is typically split into parts due to internal punctuation.
+
+### Possessives and contractions
+Examples include words like `David's` (possessives) and `can't` (contractions) as a single word token. 
+
+### Plural Possessive vs Quotation Ending
+An unaddressed edge case is differentiating between a plural possessive and the ending of a quote.
+
+`"You might ask, 'Do all cars' horns "honk and beep" or do they make other sounds?' but I may not know."`
+
+We could create rules on the grammatical usage of smart quotes to differentiate but unlikely to be followed.
+
+We’ve looked into approaches that require full context as many quotes transcend paragraphs… 
+but there are mixed implementations of quotation opening/closing across multiple paragraphs.
+
+### Numbers
+It also does the same thing for numbers like `144,000.0` and `24:30` that were split up on commas, periods, and colons.
+
+Greedy tokenization is a flag that can be turned on and off so it can still behave as before if we want it too.
 
 Edit the options and watch the effect on the output.
 
 ```js
 import {tokenize} from '../tokenizers.js';
 
-const text = `“Didn’t David's 10,000 abençoando-os our h-e'a-rt's 'burn' disciples—and everyone else—what us?” -‭Luke‬ ‭2,4.3:2‬`;
+const text = `“Didn’t David's and Moses' 10,000 abençoando-os our h-e'a-rt's 'burn' disciples—and everyone else—what us?” -‭Luke‬ ‭2,4.3:2‬`;
 
 const options = {
   text,
@@ -17,13 +36,11 @@ const options = {
   verbose: false,
 }
 const tokens = tokenize(options);
-const tokenItems = tokens.map(token => {
-  const string = (typeof token === 'string') ? token : JSON.stringify(token, null, 2);
-  return (<li>{string}</li>);
-});
+const output = JSON.stringify(tokens, null, 2);
 
 <>
   <p>{text}</p>
-  <ol>{tokenItems}</ol>
+  <p>{tokens.length} tokens:</p>
+  <pre>{output}</pre>
 </>
 ```
