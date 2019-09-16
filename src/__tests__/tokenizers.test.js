@@ -1,10 +1,5 @@
 /* eslint-env jest */
-import * as tokenizers from '../tokenizers';
-
-const {
-  tokenize,
-  tokenizeWithPunctuation,
-} = tokenizers;
+import {tokenize} from '../tokenizers';
 
 describe('Tokenizer', function() {
   it('tokenize() should return empty array for empty text', function() {
