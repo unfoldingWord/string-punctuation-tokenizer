@@ -2,49 +2,53 @@ import xRegExp from 'xregexp';
 import {occurrenceInString, occurrencesInString} from './occurrences';
 // constants
 export const word = xRegExp('[\\pL\\pM\\u200D]+', '');
+export const greedyWord = xRegExp('([\\pL\\pM\\u200D]+([-\'’]?[\\pL\\pM\\u200D])+|[\\pL\\pM\\u200D]+)', '');
 export const punctuation = xRegExp('(^\\p{P}|[<>]{2})', '');
 export const whitespace = /\s+/;
 export const number = /\d+/;
+export const greedyNumber = /(\d+([:.,]?\d)+|\d+)/;
 export const number_ = xRegExp(number);
-const tokenizerOptions = {word, whitespace, punctuation, number};
 
 /**
  * Tokenize a string into an array of words
- * @param {String} string - string to be tokenized
+ * @param {Object} params - string to be tokenized
  * @return {Array} - array of tokenized words/strings
  */
-export const tokenize = (string) => {
-  const tokenTypes = ['word', 'number'];
-  const _tokens = classifyTokens(string, tokenizerOptions);
-  const tokens = _tokens.filter((token) => tokenTypes.includes(token.type))
-    .map((token) => token.token);
-  return tokens;
-};
-/**
- * Tokenize a string into an array of words
- * @param {String} string - string to be tokenized
- * @param {Object} options - include word occurrence or not.
- *        withWordOccurrence <boolean>
- * @return {Array} - array of tokenized words/strings
- */
-export const tokenizeWithPunctuation = (string, options) => {
-  const tokenTypes = ['word', 'number', 'punctuation'];
-  const _tokens = classifyTokens(string, tokenizerOptions);
-  const tokens = _tokens.filter((token) => tokenTypes.includes(token.type))
-    .map((token, index) => {
-      const occurrences = occurrencesInString(string, token.token);
-      const occurrence = occurrenceInString(string, index, token.token);
-      if (options && options.withWordOccurrence) {
-        return {
-          word: token.token,
-          type: token.type,
-          occurrence,
-          occurrences,
-        };
-      } else {
-        return token.token;
-      }
+export const tokenize = ({
+  text='',
+  includeWords=true,
+  includeNumbers=true,
+  includeWhitespace=false,
+  includePunctuation=false,
+  greedy=false,
+  verbose=false,
+  occurrences=false,
+  parsers={word, whitespace, punctuation, number},
+}) => {
+  const greedyParsers = {...parsers, word: greedyWord, number: greedyNumber};
+  const _parsers = greedy ? greedyParsers : parsers;
+  let tokens = classifyTokens(text, _parsers);
+  const types = [];
+  if (includeWords) types.push('word');
+  if (includeNumbers) types.push('number');
+  if (includeWhitespace) types.push('whitespace');
+  if (includePunctuation) types.push('punctuation');
+  tokens = tokens.filter((token) => types.includes(token.type));
+  if (occurrences) {
+    tokens = tokens.map((token, index) => {
+      const _occurrences = occurrencesInString(text, token.token);
+      const _occurrence = occurrenceInString(text, index, token.token);
+      return {...token, occurrence: _occurrence, occurrences: _occurrences};
     });
+  }
+  if (verbose) {
+    tokens = tokens.map((token) => {
+      delete token.matches;
+      return token;
+    });
+  } else {
+    tokens = tokens.map((token) => token.token);
+  }
   return tokens;
 };
 
@@ -65,9 +69,9 @@ export const classifyTokens = (string, parsers, deftok) => {
   let t;
   let tokens = [];
   while (string) {
-   t = null;
-   m = string.length;
-   for ( let key in parsers ) {
+  t = null;
+  m = string.length;
+  for ( let key in parsers ) {
     if (parsers.hasOwnProperty(key)) {
       r = parsers[key].exec( string );
       // try to choose the best match if there are several
@@ -81,20 +85,20 @@ export const classifyTokens = (string, parsers, deftok) => {
         m = r.index;
       }
     }
-   }
-   if ( m ) {
+  }
+  if ( m ) {
      // there is text between last token and currently
      // matched token - push that out as default or "unknown"
-     tokens.push({
-       token: string.substr( 0, m ),
-       type: deftok || 'unknown',
-     });
-   }
-   if ( t ) {
+    tokens.push({
+      token: string.substr( 0, m ),
+      type: deftok || 'unknown',
+    });
+  }
+  if ( t ) {
      // push current token onto sequence
-     tokens.push( t );
-   }
-   string = string.substr( m + (t ? t.token.length : 0) );
+    tokens.push( t );
+  }
+  string = string.substr( m + (t ? t.token.length : 0) );
   }
   return tokens;
 };
