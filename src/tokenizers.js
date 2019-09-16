@@ -1,8 +1,8 @@
 import xRegExp from 'xregexp';
 import {occurrenceInString, occurrencesInString} from './occurrences';
 // constants
-export const word = xRegExp('[\\pL\\pM\\u200D]+', '');
-export const greedyWord = xRegExp('([\\pL\\pM\\u200D]+([-\'’]?[\\pL\\pM\\u200D])+|[\\pL\\pM\\u200D]+)', '');
+export const word = xRegExp('[\\pL\\pM\\u200D\\u2060]+', '');
+export const greedyWord = xRegExp('([\\pL\\pM\\u200D\\u2060]+([-\'’]?[\\pL\\pM\\u200D\\u2060])+|[\\pL\\pM\\u200D\\u2060]+)', '');
 export const punctuation = xRegExp('(^\\p{P}|[<>]{2})', '');
 export const whitespace = /\s+/;
 export const number = /\d+/;
@@ -18,8 +18,8 @@ export const tokenize = ({
   text='',
   includeWords=true,
   includeNumbers=true,
-  includeWhitespace=false,
   includePunctuation=false,
+  includeWhitespace=false,
   greedy=false,
   verbose=false,
   occurrences=false,
@@ -36,8 +36,16 @@ export const tokenize = ({
   tokens = tokens.filter((token) => types.includes(token.type));
   if (occurrences) {
     tokens = tokens.map((token, index) => {
-      const _occurrences = occurrencesInString(text, token.token);
-      const _occurrence = occurrenceInString(text, index, token.token);
+      const options = {
+        includeWords,
+        includeNumbers,
+        includePunctuation,
+        includeWhitespace,
+        greedy,
+        parsers,
+      };
+      const _occurrences = occurrencesInString(text, token.token, options);
+      const _occurrence = occurrenceInString(text, index, token.token, options);
       return {...token, occurrence: _occurrence, occurrences: _occurrences};
     });
   }
@@ -63,42 +71,43 @@ export const classifyTokens = (string, parsers, deftok) => {
   string = (!string) ? '' : string; // if string is undefined, make it an empty string
   if (typeof string !== 'string') {
     throw new Error(`tokenizer.tokenize() string is not String: ${string}`);
-}
+  }
   let m;
   let r;
   let t;
   let tokens = [];
   while (string) {
-  t = null;
-  m = string.length;
-  for ( let key in parsers ) {
-    if (parsers.hasOwnProperty(key)) {
-      r = parsers[key].exec( string );
-      // try to choose the best match if there are several
-      // where "best" is the closest to the current starting point
-      if ( r && ( r.index < m ) ) {
-        t = {
-          token: r[0],
-          type: key,
-          matches: r.slice( 1 ),
-        };
-        m = r.index;
+    t = null;
+    m = string.length;
+    let key;
+    for (key in parsers) {
+      if (Object.prototype.hasOwnProperty.call(parsers, key)) {
+        r = parsers[key].exec( string );
+        // try to choose the best match if there are several
+        // where "best" is the closest to the current starting point
+        if ( r && ( r.index < m ) ) {
+          t = {
+            token: r[0],
+            type: key,
+            matches: r.slice(1),
+          };
+          m = r.index;
+        }
       }
     }
-  }
-  if ( m ) {
-     // there is text between last token and currently
-     // matched token - push that out as default or "unknown"
-    tokens.push({
-      token: string.substr( 0, m ),
-      type: deftok || 'unknown',
-    });
-  }
-  if ( t ) {
-     // push current token onto sequence
-    tokens.push( t );
-  }
-  string = string.substr( m + (t ? t.token.length : 0) );
+    if ( m ) {
+      // there is text between last token and currently
+      // matched token - push that out as default or "unknown"
+      tokens.push({
+        token: string.substr( 0, m ),
+        type: deftok || 'unknown',
+      });
+    }
+    if ( t ) {
+      // push current token onto sequence
+      tokens.push( t );
+    }
+    string = string.substr( m + (t ? t.token.length : 0) );
   }
   return tokens;
 };

@@ -10,8 +10,16 @@ let sections = [
     content: 'README.md',
   },
   {
-    name: 'Greedy',
+    name: 'Tokenize',
+    content: 'src/docs/Tokenize.md',
+  },
+  {
+    name: 'Greedy Tokens',
     content: 'src/docs/Greedy.md',
+  },
+  {
+    name: 'Zero Width Joiners',
+    content: 'src/docs/ZeroWidthJoiners.md',
   },
 ];
 

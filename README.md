@@ -16,13 +16,17 @@ or ES6
 
 #### Tokenize with punctuation
 ```js
-import {tokenize} from './src/tokenizers';
+import {tokenize} from './src/tokenizers'; // use the import from above instead of this
 let words = tokenize({text: 'Hello world, my name is Manny!', includePunctuation: true});
 // words = ["Hello", "world", ",", "my", "name", "is", "Manny", "!"]
 ```
 #### Tokenize without punctuation
 ```js
-import {tokenize} from './src/tokenizers';
-let words = tokenize({text: 'Hello world, my name is Manny!', includePunctuation: true});
+import {tokenize} from './src/tokenizers'; // use the import from above instead of this
+let words = tokenize({text: 'Hello world, my name is Manny!'});
 // words = ["Hello", "world", "my", "name", "is", "Manny"]
 ```
+
+### Documentation
+See detailed documentation and live WYSIWYG playground here:
+https://translationcoreapps.github.io/string-punctuation-tokenizer/
