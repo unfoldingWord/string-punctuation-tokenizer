@@ -21,6 +21,10 @@ let sections = [
     name: 'Zero Width Joiners',
     content: 'src/docs/ZeroWidthJoiners.md',
   },
+  {
+    name: 'Benchmarks',
+    content: 'src/docs/Benchmarks.md',
+  },
 ];
 
 module.exports = {

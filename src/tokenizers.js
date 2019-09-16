@@ -1,5 +1,5 @@
 import xRegExp from 'xregexp';
-import {occurrenceInString, occurrencesInString} from './occurrences';
+import {occurrenceInTokens, occurrencesInTokens} from './occurrences';
 // constants
 export const word = xRegExp('[\\pL\\pM\\u200D\\u2060]+', '');
 export const greedyWord = xRegExp('([\\pL\\pM\\u200D\\u2060]+([-\'’]?[\\pL\\pM\\u200D\\u2060])+|[\\pL\\pM\\u200D\\u2060]+)', '');
@@ -36,16 +36,8 @@ export const tokenize = ({
   tokens = tokens.filter((token) => types.includes(token.type));
   if (occurrences) {
     tokens = tokens.map((token, index) => {
-      const options = {
-        includeWords,
-        includeNumbers,
-        includePunctuation,
-        includeWhitespace,
-        greedy,
-        parsers,
-      };
-      const _occurrences = occurrencesInString(text, token.token, options);
-      const _occurrence = occurrenceInString(text, index, token.token, options);
+      const _occurrences = occurrencesInTokens(tokens, token.token);
+      const _occurrence = occurrenceInTokens(tokens, index, token.token);
       return {...token, occurrence: _occurrence, occurrences: _occurrences};
     });
   }
