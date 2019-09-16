@@ -1,6 +1,5 @@
 import {
   tokenize,
-  tokenizeWithPunctuation,
   word,
   punctuation,
   whitespace,
@@ -20,7 +19,6 @@ import {
 
 export default {
   tokenize,
-  tokenizeWithPunctuation,
   occurrenceInString,
   occurrencesInString,
   selectionArray,
