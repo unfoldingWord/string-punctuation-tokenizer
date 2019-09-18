@@ -35,7 +35,7 @@ const results = benchmarks.map(([label, callback], index) => {
 const output = results.map(([label, result], index) => (
   <p key={index}>
     <span>{label}: </span>
-    <strong>{result.toFixed(0)}ms</strong>
+    <strong>{(result/1000).toFixed(4)}ms</strong>
   </p>
 ));
 // wrapped in a React fragment for rendering:
