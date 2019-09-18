@@ -9995,6 +9995,16 @@ string-length@^2.0.0:
     astral-regex "^1.0.0"
     strip-ansi "^4.0.0"
 
+string-punctuation-tokenizer@0.9.4:
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/string-punctuation-tokenizer/-/string-punctuation-tokenizer-0.9.4.tgz#1a9ad6218372378a4a0e4c943eeb6802b0ec9986"
+  integrity sha512-Yztsbpx7SpjxsV98LXcJIpHvkhnjlizKW93xtd1dtCIUvmKcv08HIGI37bIa/4KdNB2KTLD9vMi59DzWsg6rUA==
+  dependencies:
+    babel-runtime "^6.26.0"
+    rimraf "^2.6.2"
+    transform-runtime "0.0.0"
+    xregexp "^4.1.1"
+
 string-width@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-1.0.2.tgz#118bdf5b8cdc51a2a7e70d211e07e2b0b9b107d3"
@@ -11071,6 +11081,13 @@ wide-align@^1.1.0:
   integrity sha512-QGkOQc8XL6Bt5PwnsExKBPuMKBxnGxWWW3fU55Xt4feHozMUhdUMaBCk290qpm/wG5u/RSKzwdAC4i51YigihA==
   dependencies:
     string-width "^1.0.2 || 2"
+
+wordmap-lexer@^0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/wordmap-lexer/-/wordmap-lexer-0.3.5.tgz#881a659193c332f1348f4a1c9417f00e15812760"
+  integrity sha512-pJaN6Vdes4y9IZ+6fDmQCFmNPoqK5mSI893XHUMhUC1fmY5PkAaOOlu6ybLj/HqwdWwJ0EPoWzXpAAJsWw081Q==
+  dependencies:
+    string-punctuation-tokenizer "0.9.4"
 
 wordwrap@~0.0.2:
   version "0.0.3"

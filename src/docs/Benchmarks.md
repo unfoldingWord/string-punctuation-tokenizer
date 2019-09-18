@@ -1,51 +1,46 @@
 
 ```js
-import {tokenize, word, number, punctuation, whitespace} from '../tokenizers.js';
+import OldTokenizer from 'string-punctuation-tokenizer'; // v0.9.4
+import Lexer from 'wordmap-lexer';
+import Tokenizer from '../';
 
-const text = `It's said that th\u200Dere are 1,000.00 different ways,\nto say...\t"I—Love—You."`;
+const text = `"So the scribes of the king were called at that time, in the third month, that is, the month of Sivan, on the twenty-third of it. It was decreed according to all of what Mordecai had commanded to the Jews, to the satraps, the governors and officials of the provinces that were located from Hodu to as far as Cush, 127 provinces, each province according to its own script, and each people group according to its own language, and to the Jews according to their own script and their own language." Esther 8:9 (ULT)`;
 
-var iterations = 10000;
+var iterations = 20;
 let start, end;
 
-start = performance.now();
-for(var i = 0; i < iterations; i++ ){
-  const options = {text};
-  const tokens = tokenize(options);
-  const output = JSON.stringify(tokens, null, 2);
-};
-end = performance.now();
-const defaultOptions = end - start;
+const benchmarks = [
+  ['tokenize(defaults) - v0.9.4', () => OldTokenizer.tokenize(text)],
+  ['tokenize(defaults) - lexer', () => Lexer.tokenize(text)],
+  ['tokenize(defaults) - current', () => Tokenizer.tokenize({text})],
+  ['tokenize(punctuation) - v0.9.4', () => OldTokenizer.tokenizeWithPunctuation(text)],
+  ['tokenize(punctuation) - lexer', () => Lexer.tokenize(text, {punctuation: true})],
+  ['tokenize(punctuation) - current', () => Tokenizer.tokenize({text, includePunctuation: true})],
+  ['tokenize(occurrences) - v0.9.4', () => OldTokenizer.tokenizeWithPunctuation(text, {withWordOccurrence: true})],
+  ['tokenize(occurrences) - current', () => Tokenizer.tokenize({text, includePunctuation: true})],
+  ['occurrence() - v0.9.4', () => OldTokenizer.occurrenceInString(text, 0, 'So')],
+  ['occurrence() - current', () => Tokenizer.occurrenceInString(text, 0, 'So')],
+  ['occurrences() - v0.9.4', () => OldTokenizer.occurrencesInString(text, 'The')],
+  ['occurrences() - current', () => Tokenizer.occurrencesInString(text, 'The')],
+]
 
-start = performance.now();
-for(var i = 0; i < iterations; i++ ){
-  const options = {
-    text,
-    greedy: true,
-  };
-  const tokens = tokenize(options);
-  const output = JSON.stringify(tokens, null, 2);
-};
-end = performance.now();
-const greedy = end - start;
+const results = benchmarks.map(([label, callback], index) => {
+  start = performance.now();
+  for (var i = 0; i < iterations; i++ ) callback();
+  end = performance.now();
+  const result = end - start;
+  return [label, result];
+});
 
-start = performance.now();
-for(var i = 0; i < iterations; i++ ){
-  const options = {
-    text,
-    verbose: true,
-    occurrences: true,
-  };
-  const tokens = tokenize(options);
-  const output = JSON.stringify(tokens, null, 2);
-};
-end = performance.now();
-const occurrences = end - start;
-
+const output = results.map(([label, result], index) => (
+  <p key={index}>
+    <span>{label}: </span>
+    <strong>{result.toFixed(0)}ms</strong>
+  </p>
+));
 // wrapped in a React fragment for rendering:
 <>
   <h4>Each run {iterations} times.</h4>
-  <p><strong>default:</strong> {defaultOptions.toFixed(0)}ms</p>
-  <p><strong>greedy:</strong> {greedy.toFixed(0)}ms</p>
-  <p><strong>occurrences:</strong> {occurrences.toFixed(0)}ms</p>
+  {output}
 </>
 ```
