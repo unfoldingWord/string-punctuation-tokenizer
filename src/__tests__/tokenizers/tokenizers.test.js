@@ -1,19 +1,7 @@
 /* eslint-env jest */
-import {tokenize} from '../tokenizers';
+import {tokenize} from '../..';
 
 describe('Tokenizer', function() {
-  it('tokenize() should return empty array for empty text', function() {
-    const text = '';
-    const tokens = tokenize({text});
-    const expected = [];
-    expect(tokens).toEqual(expected);
-  });
-  it('tokenize() should return empty array for " " text', function() {
-    const text = ' ';
-    const tokens = tokenize({text});
-    const expected = [];
-    expect(tokens).toEqual(expected);
-  });
   it('tokenize() should return ["asdf"] array for "asdf" text', function() {
     const text = 'asdf';
     const tokens = tokenize({text});
@@ -24,18 +12,6 @@ describe('Tokenizer', function() {
     const text = 'asdf qwerty';
     const tokens = tokenize({text});
     const expected = ['asdf', 'qwerty'];
-    expect(tokens).toEqual(expected);
-  });
-  it('tokenize() should return ["asdf", "qwerty"] array for "asdf, qwerty." text', function() {
-    const text = 'asdf, qwerty.';
-    const tokens = tokenize({text});
-    const expected = ['asdf', 'qwerty'];
-    expect(tokens).toEqual(expected);
-  });
-  it('tokenize() should handle numbers with text', function() {
-    const text = 'sdkk 123, aksj- 213 ,000 qwerty 1';
-    const tokens = tokenize({text});
-    const expected = ['sdkk', '123', 'aksj', '213', '000', 'qwerty', '1'];
     expect(tokens).toEqual(expected);
   });
   it('tokenize() should return ["asdf", "qwerty"] array for "asdf, qwerty." text', function() {
@@ -126,14 +102,4 @@ describe('tokenizeWithPunctuation', function() {
   //   const expected = ["Sapagkat", "sino", "sa", "mga", "anghel", "ang", "pinagsabihan", "niya", "kailanman", "ng", ",", "\"", "Ikaw", "ay", "aking", "anak", ",", "ngayon", "ako", "ay", "naging", "iyong", "ama", "?", "\"", "At", "muli", ",", "\"", "Ako'y", "magiging", "ama", "sa", "kaniya", ",", "at", "siya", "ay", "magiging", "anak", "sa", "akin", "\"", "?"];
   //   expect(tokens).toEqual(expected);
   // });
-});
-
-
-describe('Indic Languages Issues', function() {
-  it('\\u200D ZERO WIDTH JOINER', function() {
-    const text = 'अब्राहम की सन्‍तान, दाऊद की सन्‍तान, यीशु मसीह की वंशावली।';
-    const tokens = tokenize({text});
-    const expected = ['अब्राहम', 'की', 'सन्‍तान', 'दाऊद', 'की', 'सन्‍तान', 'यीशु', 'मसीह', 'की', 'वंशावली'];
-    expect(tokens).toEqual(expected);
-  });
 });

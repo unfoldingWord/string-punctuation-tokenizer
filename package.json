@@ -1,6 +1,6 @@
 {
   "name": "string-punctuation-tokenizer",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-rc.0",
   "description": "Small library that provides functions to tokenize a string into an array of words with or without punctuation",
   "homepage": "https://translationcoreapps.github.io/string-punctuation-tokenizer/",
   "main": "lib/index.js",
@@ -36,8 +36,6 @@
     "url": "https://github.com/translationCoreApps/string-punctuation-tokenizer/issues"
   },
   "dependencies": {
-    "babel-runtime": "^6.26.0",
-    "transform-runtime": "0.0.0",
     "xregexp": "^4.1.1"
   },
   "devDependencies": {
