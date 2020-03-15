@@ -31,7 +31,7 @@ export const occurrencesInTokens = (
 ) => {
   let occurrences = 0;
   tokens.forEach((token) => {
-    if (token.token === subString) occurrences ++;
+    if (token && token.token === subString) occurrences ++;
   });
   return occurrences;
 };
