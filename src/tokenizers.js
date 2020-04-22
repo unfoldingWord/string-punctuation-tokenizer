@@ -14,6 +14,11 @@ export const number = xRegExp(_number);
 export const greedyNumber = xRegExp(_greedyNumber); //  /(\d+([:.,]?\d)+|\d+)/;
 export const number_ = xRegExp(number);
 
+export const normalizations = [
+  [[/(\u200B)/g], ''],
+  [[/\s+/g], ' '],
+];
+
 /**
  * Tokenize a string into an array of words
  * @param {Object} params - string to be tokenized
@@ -28,12 +33,13 @@ export const tokenize = ({
   greedy = false,
   verbose = false,
   occurrences = false,
-  safe = true,
   parsers = {word, whitespace, punctuation, number},
+  normalize = false,
+  normalizations = normalizations,
 }) => {
   const greedyParsers = {...parsers, word: greedyWord, number: greedyNumber};
   const _parsers = greedy ? greedyParsers : parsers;
-  let tokens = classifyTokens(text, _parsers, null, safe);
+  let tokens = classifyTokens(text, _parsers, null, normalize, normalizations);
   const types = [];
   if (includeWords) types.push('word');
   if (includeNumbers) types.push('number');
@@ -63,10 +69,12 @@ export const tokenize = ({
  * @param {String} string - string to be tokenized
  * @param {Object} parsers - { word:/\w+/, whitespace:/\s+/, punctuation:/[^\w\s]/ }
  * @param {String} deftok - type to label tokens that are not classified with the above parsers
- * @param {Boolean} safe - This flag will not perform destructive normalization output tokens
+ * @param {boolean} normalize - This flag will perform normalization on output tokens
+ * @param {[[RegExp, String]]} normalizations - Normalization Objects to perform the replace with
  * @return {Array} - array of objects => [{ token:"this", type:"word" },{ token:" ", type:"whitespace" }, Object { token:"is", type:"word" }, ... ]
 **/
-export const classifyTokens = (string, parsers, deftok, safe) => {
+export const classifyTokens = (string, parsers, deftok,
+  normalize, normalizations) => {
   string = (!string) ? '' : string; // if string is undefined, make it an empty string
   if (typeof string !== 'string') {
     throw new Error(`tokenizer.tokenize() string is not String: ${string}`);
@@ -85,8 +93,12 @@ export const classifyTokens = (string, parsers, deftok, safe) => {
         // try to choose the best match if there are several
         // where "best" is the closest to the current starting point
         if (r && (r.index < m)) {
+          let token = r[0];
+          if (normalize) {
+            token = normalizer(token, normalizations);
+          }
           t = {
-            token: normalize(r[0], safe),
+            token,
             type: key,
             matches: r.slice(1),
           };
@@ -114,15 +126,13 @@ export const classifyTokens = (string, parsers, deftok, safe) => {
 /**
  *
  * @param {String} string - The string to normalize
- * @param {Boolean} safe - This flag will not perform destructive normalization output tokens
+ * @param {[[RegExp, String]]} normalizations - Normalization Objects to perform the replace with
  * @return {String} - The normalized string
  */
-function normalize(string, safe) {
+function normalizer(string, normalizations) {
   let _string = string.slice(0);
-  const safeRegex = /\s+/g;
-  const nonSafeRegex = /(\u200B)/g;
-  if (!safe) {
-    _string = _string.replace(nonSafeRegex, '');
-  }
-  return _string.replace(safeRegex, '');
+  normalizations.forEach(([regex, stringReplace]) => {
+    _string = _string.replace(regex, stringReplace);
+  });
+  return _string;
 }
