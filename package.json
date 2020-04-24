@@ -9,7 +9,7 @@
     "styleguide:build": "styleguidist build",
     "test": "eslint ./src && jest",
     "fix": "eslint ./src --fix",
-    "prepublishOnly": "rm -fr ./lib & babel ./src --out-dir ./lib -s inline --ignore '**/__tests__'",
+    "prepublishOnly": "rm -fr ./lib & babel ./src --out-dir ./lib -s inline --ignore '**/__tests__'"
   },
   "jest": {
     "collectCoverageFrom": [
