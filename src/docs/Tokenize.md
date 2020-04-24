@@ -59,10 +59,10 @@ const options = {
   //parsers: {word, number, punctuation, whitespace},
   //parsers: {word: /\w+/, number: /\d+/, punctuation: /[\.,'"]/, whitespace: /\s+/},
   normalize: true,
-  normalizations: [
-    [ [/\((r|R)\)/g, '®'], 'Registered' ],
-    [ [/\(tm\)/gi, '™'], 'Trademark' ],
-  ],
+  // normalizations: [
+  //   [ [/\((r|R)\)/g, '®'], 'Registered' ],
+  //   [ [/\(tm\)/gi, '™'], 'Trademark' ],
+  // ],
 }
 const tokens = tokenize(options);
 const output = JSON.stringify(tokens, null, 2);
