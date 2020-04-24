@@ -35,6 +35,8 @@ Tiny tokenizer - https://gist.github.com/borgar/451393
 - `verbose {bool}`: Output an array of token objects with types.
 - `occurrences {bool}`: Output `occurrence` and `occurrences` for each token, requires verbose.
 - `parsers {object}`: Override the internal token classifier's Regular Expressions for `{word, number, punctuation, whitespace}`.
+- `nomalize {bool}`: Enable normalization.
+- `norrmalizers {array}`: Override the internal normalization.
 
 ### Usage Example
 Edit the options and watch the effect on the output.
@@ -43,7 +45,7 @@ Edit the options and watch the effect on the output.
 // import {tokenize} from 'string-punctuation-tokenizer';
 import {tokenize, word, number, punctuation, whitespace} from '../tokenizers.js';
 
-const text = `It's said that th\u200Dere are 1,000.00 different ways,\nto say...\t"I—Love—You."`;
+const text = `It's said that th\u200Dere are 1,000.00 different ways,\nto say...\t"I—Love—You." (r) ™`;
 
 const options = {
   text,
@@ -51,11 +53,17 @@ const options = {
   includeNumbers: true,
   includePunctuation: true,
   includeWhitespace: true,
+  includeUnknown: true,
   greedy: true,
   verbose: true,
   occurrences: true,
   //parsers: {word, number, punctuation, whitespace},
   //parsers: {word: /\w+/, number: /\d+/, punctuation: /[\.,'"]/, whitespace: /\s+/},
+  normalize: true,
+  // normalizations: [
+  //   { inputs: [/\((r|R)\)/g, '®'], output: 'Registered' },
+  //   { inputs: [/\(tm\)/gi, '™'], output: 'Trademark' },
+  // ],
 }
 const tokens = tokenize(options);
 const output = JSON.stringify(tokens, null, 2);
