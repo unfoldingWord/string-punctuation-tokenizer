@@ -30,6 +30,7 @@ export const tokenize = ({
   includeNumbers = true,
   includePunctuation = false,
   includeWhitespace = false,
+  includeUnknown = false,
   greedy = false,
   verbose = false,
   occurrences = false,
@@ -42,12 +43,13 @@ export const tokenize = ({
 
   const greedyParsers = {...parsers, word: greedyWord, number: greedyNumber};
   const _parsers = greedy ? greedyParsers : parsers;
-  let tokens = classifyTokens(string, _parsers, null, normalize, normalizations);
+  let tokens = classifyTokens(string, _parsers, 'unknown');
   const types = [];
   if (includeWords) types.push('word');
   if (includeNumbers) types.push('number');
   if (includeWhitespace) types.push('whitespace');
   if (includePunctuation) types.push('punctuation');
+  if (includeUnknown) types.push('unknown');
   tokens = tokens.filter((token) => types.includes(token.type));
   if (occurrences) {
     tokens = tokens.map((token, index) => {

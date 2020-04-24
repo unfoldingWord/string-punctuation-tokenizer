@@ -53,6 +53,7 @@ const options = {
   includeNumbers: true,
   includePunctuation: true,
   includeWhitespace: true,
+  includeUnknown: true,
   greedy: true,
   verbose: true,
   occurrences: true,
