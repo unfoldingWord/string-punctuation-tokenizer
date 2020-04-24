@@ -60,8 +60,8 @@ const options = {
   //parsers: {word: /\w+/, number: /\d+/, punctuation: /[\.,'"]/, whitespace: /\s+/},
   normalize: true,
   // normalizations: [
-  //   [ [/\((r|R)\)/g, '®'], 'Registered' ],
-  //   [ [/\(tm\)/gi, '™'], 'Trademark' ],
+  //   { inputs: [/\((r|R)\)/g, '®'], output: 'Registered' },
+  //   { inputs: [/\(tm\)/gi, '™'], output: 'Trademark' },
   // ],
 }
 const tokens = tokenize(options);

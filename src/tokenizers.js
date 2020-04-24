@@ -14,12 +14,10 @@ export const number = xRegExp(_number);
 export const greedyNumber = xRegExp(_greedyNumber); //  /(\d+([:.,]?\d)+|\d+)/;
 export const number_ = xRegExp(number);
 
-export const _normalizations = {
-  destructive: [
-    [[/(\u200B)/g], ''],
-    [[/\s+/g], ' '],
-  ],
-};
+export const normalizationsDestructive = [
+  {inputs: [/(\u200B)/g], output: ''},
+  {inputs: [/\s+/g], output: ' '},
+];
 
 /**
  * Tokenize a string into an array of words
@@ -37,7 +35,7 @@ export const tokenize = ({
   occurrences = false,
   parsers = {word, whitespace, punctuation, number},
   normalize = false,
-  normalizations = _normalizations.destructive,
+  normalizations = normalizationsDestructive,
 }) => {
   let string = text.slice(0);
   if (normalize) string = normalizer(string, normalizations);
@@ -124,14 +122,14 @@ export const classifyTokens = (string, parsers, deftok) => {
 
 /**
  * @param {String} string - The string to normalize
- * @param {[[RegExp, String]]} normalizations - Normalization Objects to perform the replace with
+ * @param {[{inputs:[RegExp], output:String}]} normalizations - Normalization Objects to perform the replace with
  * @return {String} - The normalized string
  */
 function normalizer(string, normalizations) {
   let _string = string.slice(0);
-  normalizations.forEach(([regexes, stringReplace]) => {
-    regexes.forEach((regex) => {
-      _string = _string.replace(regex, stringReplace);
+  normalizations.forEach(({inputs, output}) => {
+    inputs.forEach((input) => {
+      _string = _string.replace(input, output);
     });
   });
 
