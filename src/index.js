@@ -1,10 +1,9 @@
 import {
   tokenize,
-  tokenizeWithPunctuation,
   word,
   punctuation,
   whitespace,
-  number_,
+  number_ as number,
 } from './tokenizers';
 
 import {
@@ -18,9 +17,8 @@ import {
   selectionsToRanges,
 } from './selectionHelpers';
 
-export default {
+export {
   tokenize,
-  tokenizeWithPunctuation,
   occurrenceInString,
   occurrencesInString,
   selectionArray,
@@ -29,5 +27,5 @@ export default {
   word,
   punctuation,
   whitespace,
-  number: number_,
+  number,
 };

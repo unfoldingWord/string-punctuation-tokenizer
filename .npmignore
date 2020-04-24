@@ -1,2 +1,5 @@
 node_modules
 __tests__
+styleguide
+styleguide.config.js
+styleguide.styles.js

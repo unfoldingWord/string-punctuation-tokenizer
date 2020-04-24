@@ -1,17 +1,18 @@
 {
   "name": "string-punctuation-tokenizer",
-  "version": "0.9.4",
+  "version": "2.0.0",
   "description": "Small library that provides functions to tokenize a string into an array of words with or without punctuation",
+  "homepage": "https://translationcoreapps.github.io/string-punctuation-tokenizer/",
   "main": "lib/index.js",
   "scripts": {
+    "start": "styleguidist server",
+    "styleguide:build": "styleguidist build",
+    "predeploy": "yarn styleguide:build",
+    "deploy": "gh-pages -d styleguide",
     "test": "eslint ./src && jest",
     "fix": "eslint ./src --fix",
-    "build": "babel ./src -d ./lib --ignore '**/__tests__,**/__mocks__'",
-    "compile": "rimraf lib && babel src/ -d lib/ --ignore '**/__tests__,**/__mocks__'",
-    "prebuild": "rm -rf ./lib",
-    "prepare": "if [ ! -d './lib/' ]; then npm run build; fi",
-    "prepublishOnly": "npm test && npm run compile",
-    "postpublish": "git tag v$npm_package_version && git push origin v$npm_package_version"
+    "prepublishOnly": "rm -fr ./lib & babel ./src --out-dir ./lib -s inline --ignore '**/__tests__'",
+    "postpublish": "yarn deploy"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -22,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/translationCoreApps/string-punctuation-tokenizer.git"
+    "url": "https://github.com/translationCoreApps/string-punctuation-tokenizer"
   },
   "keywords": [
     "string",
@@ -34,24 +35,25 @@
   "bugs": {
     "url": "https://github.com/translationCoreApps/string-punctuation-tokenizer/issues"
   },
-  "homepage": "https://github.com/translationCoreApps/string-punctuation-tokenizer#readme",
   "dependencies": {
-    "babel-runtime": "^6.26.0",
-    "rimraf": "^2.6.2",
-    "transform-runtime": "0.0.0",
     "xregexp": "^4.1.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-es2015": "^6.24.1",
-    "eslint": "^5.10.0",
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-react": "^7.0.0",
+    "eslint": "^6.1.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-jest": "^22.1.2",
-    "jest": "^23.6.0"
+    "gh-pages": "^2.0.1",
+    "jest": "24.8.0",
+    "lodash": "^4.17.11",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "^3.1.1",
+    "react-styleguidist": "^9.0.5",
+    "string-punctuation-tokenizer": "0.9.4",
+    "wordmap-lexer": "^0.3.5"
   }
 }
