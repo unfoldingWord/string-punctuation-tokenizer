@@ -4,7 +4,7 @@ import {occurrenceInTokens, occurrencesInTokens} from './occurrences';
 export const _word = '[\\pL\\pM\\u200D\\u2060]+';
 export const _number = '[\\pN\\pNd\\pNl\\pNo]+';
 export const _wordOrNumber = '(' + _word + '|' + _number + ')';
-export const _greedyWord = '(' + _wordOrNumber + '([-\'’]?' + _word + ')+|' + _word + ')';
+export const _greedyWord = '(' + _wordOrNumber + '([-\'’]' + _word + ')+|' + _word + '’?)';
 export const _greedyNumber = '(' + _number + '([:.,]?' + _number + ')+|' + _number + ')';
 export const word = xRegExp(_word, '');
 export const greedyWord = xRegExp(_greedyWord, '');
