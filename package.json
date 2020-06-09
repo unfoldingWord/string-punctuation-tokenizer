@@ -28,7 +28,7 @@
     "tokenizer"
   ],
   "author": "@unfoldingword",
-  "license": "GPL-2.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/unfoldingword/string-punctuation-tokenizer/issues"
   },
