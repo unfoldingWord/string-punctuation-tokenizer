@@ -1,13 +1,13 @@
 {
   "files": {
-    "build/0.0e314e9a.js": "/string-punctuation-tokenizer/build/0.0e314e9a.js",
-    "main.js": "/string-punctuation-tokenizer/build/main.6a4dd9e5.js",
-    "runtime-main.js": "/string-punctuation-tokenizer/build/bundle.105de5e2.js",
-    "index.html": "/string-punctuation-tokenizer/index.html"
+    "build/0.a68beb78.js": "/build/0.a68beb78.js",
+    "main.js": "/build/main.b7e38447.js",
+    "runtime-main.js": "/build/bundle.105de5e2.js",
+    "index.html": "/index.html"
   },
   "entrypoints": [
     "build/bundle.105de5e2.js",
-    "build/0.0e314e9a.js",
-    "build/main.6a4dd9e5.js"
+    "build/0.a68beb78.js",
+    "build/main.b7e38447.js"
   ]
 }
