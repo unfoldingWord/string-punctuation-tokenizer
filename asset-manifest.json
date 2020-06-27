@@ -1,13 +1,13 @@
 {
   "files": {
     "build/0.a68beb78.js": "/build/0.a68beb78.js",
-    "main.js": "/build/main.b7e38447.js",
+    "main.js": "/build/main.ad133450.js",
     "runtime-main.js": "/build/bundle.105de5e2.js",
     "index.html": "/index.html"
   },
   "entrypoints": [
     "build/bundle.105de5e2.js",
     "build/0.a68beb78.js",
-    "build/main.b7e38447.js"
+    "build/main.ad133450.js"
   ]
 }
