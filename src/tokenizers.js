@@ -1,11 +1,13 @@
 import xRegExp from 'xregexp';
-import {occurrenceInTokens, occurrencesInTokens} from './occurrences';
+import { occurrenceInTokens, occurrencesInTokens } from './occurrences';
 // constants
 export const _word = '[\\pL\\pM\\u200D\\u2060]+';
 export const _number = '[\\pN\\pNd\\pNl\\pNo]+';
 export const _wordOrNumber = '(' + _word + '|' + _number + ')';
-export const _greedyWord = '(' + _wordOrNumber + '([-\'’]?' + _word + ')+|' + _word + ')';
-export const _greedyNumber = '(' + _number + '([:.,]?' + _number + ')+|' + _number + ')';
+export const _greedyWord =
+  '(' + _wordOrNumber + "([-'’]?" + _word + ')+|' + _word + ')';
+export const _greedyNumber =
+  '(' + _number + '([:.,]?' + _number + ')+|' + _number + ')';
 export const word = xRegExp(_word, '');
 export const greedyWord = xRegExp(_greedyWord, '');
 export const punctuation = xRegExp('(^\\p{P}|[<>]{2})', '');
@@ -14,23 +16,43 @@ export const number = xRegExp(_number);
 export const greedyNumber = xRegExp(_greedyNumber); //  /(\d+([:.,]?\d)+|\d+)/;
 export const number_ = xRegExp(number);
 
+// NOTE: in UHB, maqqef 05BE is followed by 2060, word joiner.
+// Therefore, we should NOT strip maqqef to match tokenization, which splits on nonword characters.
+export const _hebrewNonSemanticGlyphs =
+  '[\u0591-\u05AF\u05BD\u05C0\u05C3-\u05C5\u2060]';
+export const stripHebrewNonSemanticGlyphs = xRegExp(
+  _hebrewNonSemanticGlyphs,
+  'gi'
+);
+
 /**
  * Tokenize a string into an array of words
  * @param {Object} params - string to be tokenized
  * @return {Array} - array of tokenized words/strings
  */
 export const tokenize = ({
-  text='',
-  includeWords=true,
-  includeNumbers=true,
-  includePunctuation=false,
-  includeWhitespace=false,
-  greedy=false,
-  verbose=false,
-  occurrences=false,
-  parsers={word, whitespace, punctuation, number},
+  text = '',
+  includeWords = true,
+  includeNumbers = true,
+  includePunctuation = false,
+  includeWhitespace = false,
+  greedy = false,
+  verbose = false,
+  occurrences = false,
+  parsers = { word, whitespace, punctuation, number },
+  normalize = false,
+  normalizeForm = 'NFKC',
+  normalizeLossy = false,
 }) => {
-  const greedyParsers = {...parsers, word: greedyWord, number: greedyNumber};
+  text = text.normalize('NFKD');
+  if (normalizeLossy) {
+    text = xRegExp.replace(text, stripHebrewNonSemanticGlyphs, '');
+  }
+  if (normalize) {
+    text = text.normalize(normalizeForm);
+  }
+
+  const greedyParsers = { ...parsers, word: greedyWord, number: greedyNumber };
   const _parsers = greedy ? greedyParsers : parsers;
   let tokens = classifyTokens(text, _parsers);
   const types = [];
@@ -43,7 +65,7 @@ export const tokenize = ({
     tokens = tokens.map((token, index) => {
       const _occurrences = occurrencesInTokens(tokens, token.token);
       const _occurrence = occurrenceInTokens(tokens, index, token.token);
-      return {...token, occurrence: _occurrence, occurrences: _occurrences};
+      return { ...token, occurrence: _occurrence, occurrences: _occurrences };
     });
   }
   if (verbose) {
@@ -63,9 +85,9 @@ export const tokenize = ({
  * @param {Object} parsers - { word:/\w+/, whitespace:/\s+/, punctuation:/[^\w\s]/ }
  * @param {String} deftok - type to label tokens that are not classified with the above parsers
  * @return {Array} - array of objects => [{ token:"this", type:"word" },{ token:" ", type:"whitespace" }, Object { token:"is", type:"word" }, ... ]
-**/
+ **/
 export const classifyTokens = (string, parsers, deftok) => {
-  string = (!string) ? '' : string; // if string is undefined, make it an empty string
+  string = !string ? '' : string; // if string is undefined, make it an empty string
   if (typeof string !== 'string') {
     throw new Error(`tokenizer.tokenize() string is not String: ${string}`);
   }
@@ -79,10 +101,10 @@ export const classifyTokens = (string, parsers, deftok) => {
     let key;
     for (key in parsers) {
       if (Object.prototype.hasOwnProperty.call(parsers, key)) {
-        r = parsers[key].exec( string );
+        r = parsers[key].exec(string);
         // try to choose the best match if there are several
         // where "best" is the closest to the current starting point
-        if ( r && ( r.index < m ) ) {
+        if (r && r.index < m) {
           t = {
             token: r[0],
             type: key,
@@ -92,19 +114,19 @@ export const classifyTokens = (string, parsers, deftok) => {
         }
       }
     }
-    if ( m ) {
+    if (m) {
       // there is text between last token and currently
       // matched token - push that out as default or "unknown"
       tokens.push({
-        token: string.substr( 0, m ),
+        token: string.substr(0, m),
         type: deftok || 'unknown',
       });
     }
-    if ( t ) {
+    if (t) {
       // push current token onto sequence
-      tokens.push( t );
+      tokens.push(t);
     }
-    string = string.substr( m + (t ? t.token.length : 0) );
+    string = string.substr(m + (t ? t.token.length : 0));
   }
   return tokens;
 };
