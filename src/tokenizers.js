@@ -1,5 +1,6 @@
 import xRegExp from 'xregexp';
 import { occurrenceInTokens, occurrencesInTokens } from './occurrences';
+import * as normalizer from './normalizer';
 // constants
 export const _word = '[\\pL\\pM\\u200D\\u2060]+';
 export const _number = '[\\pN\\pNd\\pNl\\pNo]+';
@@ -15,15 +16,6 @@ export const whitespace = /\s+/;
 export const number = xRegExp(_number);
 export const greedyNumber = xRegExp(_greedyNumber); //  /(\d+([:.,]?\d)+|\d+)/;
 export const number_ = xRegExp(number);
-
-// NOTE: in UHB, maqqef 05BE is followed by 2060, word joiner.
-// Therefore, we should NOT strip maqqef to match tokenization, which splits on nonword characters.
-export const _hebrewNonSemanticGlyphs =
-  '[\u0591-\u05AF\u05BD\u05C0\u05C3-\u05C5\u2060]';
-export const stripHebrewNonSemanticGlyphs = xRegExp(
-  _hebrewNonSemanticGlyphs,
-  'gi'
-);
 
 /**
  * Tokenize a string into an array of words
@@ -44,12 +36,12 @@ export const tokenize = ({
   normalizeForm = 'NFKC',
   normalizeLossy = false,
 }) => {
-  text = text.normalize('NFKD');
-  if (normalizeLossy) {
-    text = xRegExp.replace(text, stripHebrewNonSemanticGlyphs, '');
-  }
   if (normalize) {
-    text = text.normalize(normalizeForm);
+    text = normalizer.normalize({
+      text,
+      form: normalizeForm,
+      lossy: normalizeLossy,
+    });
   }
 
   const greedyParsers = { ...parsers, word: greedyWord, number: greedyNumber };

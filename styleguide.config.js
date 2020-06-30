@@ -14,6 +14,10 @@ let sections = [
     content: 'src/docs/Tokenize.md',
   },
   {
+    name: 'Normalize',
+    content: 'src/docs/Normalize.md',
+  },
+  {
     name: 'Greedy Tokens',
     content: 'src/docs/Greedy.md',
   },
@@ -31,7 +35,7 @@ module.exports = {
   title: `${upperFirst(camelCase(name))} v${version}`,
   ribbon: {
     url: repository.url,
-    text: 'View on GitHub'
+    text: 'View on GitHub',
   },
   webpackConfig: require('react-scripts/config/webpack.config')('development'),
   // serverPort: 3000,
