@@ -1,18 +1,15 @@
 {
   "name": "string-punctuation-tokenizer",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Small library that provides functions to tokenize a string into an array of words with or without punctuation",
-  "homepage": "https://translationcoreapps.github.io/string-punctuation-tokenizer/",
+  "homepage": "https://string-punctuation-tokenizer.netlify.app/",
   "main": "lib/index.js",
   "scripts": {
     "start": "styleguidist server",
     "styleguide:build": "styleguidist build",
-    "predeploy": "yarn styleguide:build",
-    "deploy": "gh-pages -d styleguide",
     "test": "eslint ./src && jest",
     "fix": "eslint ./src --fix",
-    "prepublishOnly": "rm -fr ./lib & babel ./src --out-dir ./lib -s inline --ignore '**/__tests__'",
-    "postpublish": "yarn deploy"
+    "prepublishOnly": "rm -fr ./lib & babel ./src --out-dir ./lib -s inline --ignore '**/__tests__'"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -23,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/translationCoreApps/string-punctuation-tokenizer"
+    "url": "https://github.com/unfoldingword/string-punctuation-tokenizer"
   },
   "keywords": [
     "string",
@@ -31,9 +28,9 @@
     "tokenizer"
   ],
   "author": "@unfoldingword",
-  "license": "GPL-2.0",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/translationCoreApps/string-punctuation-tokenizer/issues"
+    "url": "https://github.com/unfoldingword/string-punctuation-tokenizer/issues"
   },
   "dependencies": {
     "xregexp": "^4.1.1"
@@ -46,7 +43,6 @@
     "eslint": "^6.1.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-jest": "^22.1.2",
-    "gh-pages": "^2.0.1",
     "jest": "24.8.0",
     "lodash": "^4.17.11",
     "react": "^16.8.6",
