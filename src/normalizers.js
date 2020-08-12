@@ -19,8 +19,6 @@ export const normalizationsDestructive = [].concat(_hebrewNonSemanticGlyphs).con
  * @return {String} - The normalized string
  */
 export const normalizerDestructive = (string, normalizations = normalizationsDestructive) => {
-    debugger;
-
     let _string = string.slice(0);
     normalizations.forEach(({ inputs, output }) => {
         inputs.forEach((input) => {
