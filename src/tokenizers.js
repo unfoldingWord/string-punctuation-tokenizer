@@ -1,6 +1,6 @@
 import xRegExp from 'xregexp';
 import { occurrenceInTokens, occurrencesInTokens } from './occurrences';
-import { normalize, normalizeDestructive } from './normalizers';
+import { normalizer, normalizerDestructive, normalizationsDestructive } from './normalizer';
 // constants
 export const _word = '[\\pL\\pM\\u200D\\u2060]+';
 export const _number = '[\\pN\\pNd\\pNl\\pNo]+';
@@ -33,13 +33,12 @@ export const tokenize = ({
   occurrences = false,
   parsers = { word, whitespace, punctuation, number },
   normalize = false,
-  normalizations = null,
-  normalizeDestructive = false,
+  normalizations = normalizationsDestructive,
 }) => {
   let string = text.slice(0);
-  if (normalize) string = normalize(string);
-  if (normalize && normalizeDestructive) {
-    string = normalizeDestructive(string);
+  if (normalize) string = normalizer(string);
+  if (normalize && normalizations) {
+    string = normalizerDestructive(string, normalizations);
   }
 
   const greedyParsers = { ...parsers, word: greedyWord, number: greedyNumber };
