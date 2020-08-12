@@ -1,6 +1,6 @@
 import xRegExp from 'xregexp';
 import { occurrenceInTokens, occurrencesInTokens } from './occurrences';
-import { normalizer, normalizerDestructive, normalizationsDestructive } from './normalizer';
+import { normalizer, normalizerDestructive, normalizationsDestructive } from './normalizers';
 // constants
 export const _word = '[\\pL\\pM\\u200D\\u2060]+';
 export const _number = '[\\pN\\pNd\\pNl\\pNo]+';
