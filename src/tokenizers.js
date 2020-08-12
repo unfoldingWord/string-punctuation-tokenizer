@@ -33,6 +33,7 @@ export const tokenize = ({
   occurrences = false,
   parsers = { word, whitespace, punctuation, number },
   normalize = false,
+  normalizations = null,
   normalizeDestructive = false,
 }) => {
   let string = text.slice(0);
