@@ -4,13 +4,13 @@
 export const _hebrewNonSemanticGlyphs = [
     { inputs: [/\u0591-\u05AF\u05BD\u05C0\u05C3-\u05C5\u2060/gi], output: '' },
 ];
-export const _greekNonSemanticGlyphs = [
+export const _spaceNonSemanticGlyphs = [
     { inputs: [/(\u200B)/g], output: '' },
     { inputs: [/\s+/g], output: ' ' },
 ];
 
 
-export const normalizationsDestructive = [].concat(_hebrewNonSemanticGlyphs).concat(_greekNonSemanticGlyphs);
+export const normalizationsDestructive = [].concat(_hebrewNonSemanticGlyphs).concat(_spaceNonSemanticGlyphs);
 
 
 /**
