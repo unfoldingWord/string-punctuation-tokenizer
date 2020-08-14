@@ -1,5 +1,6 @@
 import xRegExp from 'xregexp';
-import {occurrenceInTokens, occurrencesInTokens} from './occurrences';
+import { occurrenceInTokens, occurrencesInTokens } from './occurrences';
+import { normalizer, normalizerDestructive, normalizationsDestructive } from './normalizers';
 // constants
 export const _word = '[\\pL\\pM\\u200D\\u2060]+';
 export const _number = '[\\pN\\pNd\\pNl\\pNo]+';
@@ -14,10 +15,6 @@ export const number = xRegExp(_number);
 export const greedyNumber = xRegExp(_greedyNumber); //  /(\d+([:.,]?\d)+|\d+)/;
 export const number_ = xRegExp(number);
 
-export const normalizationsDestructive = [
-  {inputs: [/(\u200B)/g], output: ''},
-  {inputs: [/\s+/g], output: ' '},
-];
 
 /**
  * Tokenize a string into an array of words
@@ -34,14 +31,17 @@ export const tokenize = ({
   greedy = false,
   verbose = false,
   occurrences = false,
-  parsers = {word, whitespace, punctuation, number},
+  parsers = { word, whitespace, punctuation, number },
   normalize = false,
   normalizations = normalizationsDestructive,
 }) => {
   let string = text.slice(0);
-  if (normalize) string = normalizer(string, normalizations);
+  if (normalize) string = normalizer(string);
+  if (normalize && normalizations) {
+    string = normalizerDestructive(string, normalizations);
+  }
 
-  const greedyParsers = {...parsers, word: greedyWord, number: greedyNumber};
+  const greedyParsers = { ...parsers, word: greedyWord, number: greedyNumber };
   const _parsers = greedy ? greedyParsers : parsers;
   let tokens = classifyTokens(string, _parsers, 'unknown');
   const types = [];
@@ -55,7 +55,7 @@ export const tokenize = ({
     tokens = tokens.map((token, index) => {
       const _occurrences = occurrencesInTokens(tokens, token.token);
       const _occurrence = occurrenceInTokens(tokens, index, token.token);
-      return {...token, occurrence: _occurrence, occurrences: _occurrences};
+      return { ...token, occurrence: _occurrence, occurrences: _occurrences };
     });
   }
   if (verbose) {
@@ -122,18 +122,3 @@ export const classifyTokens = (string, parsers, deftok) => {
   return tokens;
 };
 
-/**
- * @param {String} string - The string to normalize
- * @param {[{inputs:[RegExp], output:String}]} normalizations - Normalization Objects to perform the replace with
- * @return {String} - The normalized string
- */
-function normalizer(string, normalizations) {
-  let _string = string.slice(0);
-  normalizations.forEach(({inputs, output}) => {
-    inputs.forEach((input) => {
-      _string = _string.replace(input, output);
-    });
-  });
-
-  return _string;
-}
