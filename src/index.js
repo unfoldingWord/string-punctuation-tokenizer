@@ -7,6 +7,12 @@ import {
 } from './tokenizers';
 
 import {
+  normalizer,
+  normalizerDestructive,
+  normalizationsDestructive,
+} from './normalizers';
+
+import {
   occurrenceInString,
   occurrencesInString,
 } from './occurrences';
@@ -19,6 +25,9 @@ import {
 
 export {
   tokenize,
+  normalizer,
+  normalizerDestructive,
+  normalizationsDestructive,
   occurrenceInString,
   occurrencesInString,
   selectionArray,
