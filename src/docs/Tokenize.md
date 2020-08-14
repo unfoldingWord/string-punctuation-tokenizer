@@ -75,3 +75,48 @@ const output = JSON.stringify(tokens, null, 2);
   <pre>{output}</pre>
 </>
 ```
+
+
+### Hebrew Cantillations Example
+Edit the options and watch the effect on the output.
+
+```js
+// import {tokenize} from 'string-punctuation-tokenizer';
+import {tokenize, word, number, punctuation, whitespace} from '../tokenizers.js';
+
+const text = `
+לׅׄוּלֵׅׄ֗אׅׄ
+
+לׅׄוּלֵׅ֗ׄאׅׄ
+
+לוּלֵא
+`;
+
+const options = {
+  text,
+  includeWords: true,
+  includeNumbers: true,
+  includePunctuation: true,
+  includeWhitespace: true,
+  includeUnknown: true,
+  greedy: true,
+  verbose: true,
+  occurrences: true,
+  //parsers: {word, number, punctuation, whitespace},
+  //parsers: {word: /\w+/, number: /\d+/, punctuation: /[\.,'"]/, whitespace: /\s+/},
+  normalize: true,
+  // normalizations: [
+  //   { inputs: [/\((r|R)\)/g, '®'], output: 'Registered' },
+  //   { inputs: [/\(tm\)/gi, '™'], output: 'Trademark' },
+  // ],
+}
+const tokens = tokenize(options);
+const output = JSON.stringify(tokens, null, 2);
+
+// wrapped in a React fragment for rendering:
+<>
+  <p>{text}</p>
+  <p>{tokens.length} tokens:</p>
+  <pre>{output}</pre>
+</>
+```

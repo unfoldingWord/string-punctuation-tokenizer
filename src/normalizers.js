@@ -2,7 +2,7 @@
 // NOTE: in UHB, maqqef 05BE is followed by 2060, word joiner.
 // Therefore, we should NOT strip maqqef to match tokenization, which splits on nonword characters.
 export const _hebrewNonSemanticGlyphs = [
-    { inputs: [/\u0591-\u05AF\u05BD\u05C0\u05C3-\u05C5\u2060/gi], output: '' },
+    { inputs: [/[\u0591-\u05AF\u05BD\u05C0\u05C3-\u05C5\u2060]/gi], output: '' },
 ];
 export const _spaceNonSemanticGlyphs = [
     { inputs: [/(\u200B)/g], output: '' },
