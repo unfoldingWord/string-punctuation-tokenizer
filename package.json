@@ -1,6 +1,6 @@
 {
   "name": "string-punctuation-tokenizer",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Small library that provides functions to tokenize a string into an array of words with or without punctuation",
   "homepage": "https://string-punctuation-tokenizer.netlify.app/",
   "main": "lib/index.js",
