@@ -65,7 +65,7 @@ export const tokenize = ({
     number: greedyNumber,
   };
   const _parsers = greedy ? greedyParsers : parsers;
-  delete _parsers['greedyWord'];
+  delete _parsers.greedyWord;
   let tokens = classifyTokens(string, _parsers, 'unknown');
   const types = [];
   if (includeWords) types.push('word');
