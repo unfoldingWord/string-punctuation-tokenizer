@@ -1,5 +1,6 @@
 import {
   tokenize,
+  tokenizeOrigLang,
   word,
   punctuation,
   whitespace,
@@ -25,6 +26,7 @@ import {
 
 export {
   tokenize,
+  tokenizeOrigLang,
   normalizer,
   normalizerDestructive,
   normalizationsDestructive,
