@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import {tokenize} from '../..';
+import {tokenize, tokenizeOrigLang} from '../..';
 
 describe('Tokenizer', function() {
   it('tokenize() should return ["asdf"] array for "asdf" text', function() {
@@ -96,10 +96,11 @@ describe('tokenizeWithPunctuation', function() {
     const expected = ['କାରଣ', 'ଈଶ୍ୱର', 'ଦୂତମାନଙ୍କ', 'ମଧ୍ୟରୁ', 'କାହାକୁ', 'କେବେ', 'ଏହା', 'କହିଅଛନ୍ତି', ',', '"', 'ତୁମ୍ଭେ', 'ଆମ୍ଭର', 'ପୁତ୍ର', ',', 'ଆଜି', 'ଆମ୍ଭେ', 'ତୁମ୍ଭକୁ', 'ଜନ୍ମ', 'ଦେଇଅଛୁ', '?', '\'', '\'', 'ପୁନଶ୍ଚ', ',', '"', 'ଆମ୍ଭେ', 'ତାହାଙ୍କର', 'ପିତା', 'ହେବା', ',', 'ଆଉ', 'ସେ', 'ଆମ୍ଭର', 'ପୁତ୍ର', 'ହେବେ', '?', '\'', '\''];
     expect(tokens).toEqual(expected);
   });
-  // it('should handle punctuation in mga text including apostrophe as contraction or the like.', function() {
-  //   const text = "Sapagkat sino sa mga anghel ang pinagsabihan niya kailanman ng, \"Ikaw ay aking anak, ngayon ako ay naging iyong ama?\" At muli, \"Ako'y magiging ama sa kaniya, at siya ay magiging anak sa akin\"?";
-  //   const tokens = tokenize({text, includePunctuation: true});
-  //   const expected = ["Sapagkat", "sino", "sa", "mga", "anghel", "ang", "pinagsabihan", "niya", "kailanman", "ng", ",", "\"", "Ikaw", "ay", "aking", "anak", ",", "ngayon", "ako", "ay", "naging", "iyong", "ama", "?", "\"", "At", "muli", ",", "\"", "Ako'y", "magiging", "ama", "sa", "kaniya", ",", "at", "siya", "ay", "magiging", "anak", "sa", "akin", "\"", "?"];
-  //   expect(tokens).toEqual(expected);
-  // });
+
+  it('should handle punctuation in greek text', function() {
+    const text = 'ἀλλ’ οὐ προκόψουσιν ἐπὶ πλεῖον, ἡ γὰρ ἄνοια αὐτῶν ἔκδηλος ἔσται πᾶσιν, ὡς καὶ ἡ ἐκείνων ἐγένετο.';
+    const tokens = tokenizeOrigLang({text, includePunctuation: true});
+    const expected = ['ἀλλ’', 'οὐ', 'προκόψουσιν', 'ἐπὶ', 'πλεῖον', ',', 'ἡ', 'γὰρ', 'ἄνοια', 'αὐτῶν', 'ἔκδηλος', 'ἔσται', 'πᾶσιν', ',', 'ὡς', 'καὶ', 'ἡ', 'ἐκείνων', 'ἐγένετο', '.'];
+    expect(tokens).toEqual(expected);
+  });
 });
