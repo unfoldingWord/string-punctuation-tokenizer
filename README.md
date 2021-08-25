@@ -28,5 +28,4 @@ let words = tokenize({text: 'Hello world, my name is Manny!'});
 ```
 
 ### Documentation
-See detailed documentation and live WYSIWYG playground here:
-https://translationcoreapps.github.io/string-punctuation-tokenizer/
+See detailed documentation and live WYSIWYG playground here: https://string-punctuation-tokenizer.netlify.app/#/Tokenize

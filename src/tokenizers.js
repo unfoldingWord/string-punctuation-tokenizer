@@ -1,20 +1,38 @@
 import xRegExp from 'xregexp';
-import { occurrenceInTokens, occurrencesInTokens } from './occurrences';
-import { normalizer, normalizerDestructive, normalizationsDestructive } from './normalizers';
+import {occurrenceInTokens, occurrencesInTokens} from './occurrences';
+import {normalizer, normalizerDestructive} from './normalizers';
+
 // constants
 export const _word = '[\\pL\\pM\\u200D\\u2060]+';
+// TRICKY: original languages do not use single quotes so u2019 is considered part of a word
+export const _origWord = '[\\pL\\pM\\u200D\\u2060\\u2019]+';
 export const _number = '[\\pN\\pNd\\pNl\\pNo]+';
 export const _wordOrNumber = '(' + _word + '|' + _number + ')';
+export const _origWordOrNumber = '(' + _origWord + '|' + _number + ')';
 export const _greedyWord = '(' + _wordOrNumber + '([-\'’]' + _word + ')+|' + _word + '’?)';
+export const _origGreedyWord = '(' + _origWordOrNumber + '([-\'’]' + _origWord + ')+|' + _origWord + '’?)';
 export const _greedyNumber = '(' + _number + '([:.,]?' + _number + ')+|' + _number + ')';
 export const word = xRegExp(_word, '');
+export const origWord = xRegExp(_origWord, '');
 export const greedyWord = xRegExp(_greedyWord, '');
+export const origGreedyWord = xRegExp(_origGreedyWord, '');
 export const punctuation = xRegExp('(^\\p{P}|[<>]{2})', '');
 export const whitespace = /\s+/;
 export const number = xRegExp(_number);
 export const greedyNumber = xRegExp(_greedyNumber); //  /(\d+([:.,]?\d)+|\d+)/;
 export const number_ = xRegExp(number);
 
+
+export const tokenizeOrigLang = (params) => tokenize({
+  parsers: {
+    word: origWord,
+    greedyWord: origGreedyWord,
+    whitespace,
+    punctuation,
+    number,
+  },
+  ...params,
+});
 
 /**
  * Tokenize a string into an array of words
@@ -31,9 +49,8 @@ export const tokenize = ({
   greedy = false,
   verbose = false,
   occurrences = false,
-  parsers = { word, whitespace, punctuation, number },
+  parsers = {word, greedyWord, whitespace, punctuation, number},
   normalize = false,
-  //normalizations = normalizationsDestructive,
   normalizations = null,
 }) => {
   let string = text.slice(0);
@@ -42,8 +59,13 @@ export const tokenize = ({
     string = normalizerDestructive(string, normalizations);
   }
 
-  const greedyParsers = { ...parsers, word: greedyWord, number: greedyNumber };
+  const greedyParsers = {
+    ...parsers,
+    word: parsers.greedyWord,
+    number: greedyNumber,
+  };
   const _parsers = greedy ? greedyParsers : parsers;
+  delete _parsers.greedyWord;
   let tokens = classifyTokens(string, _parsers, 'unknown');
   const types = [];
   if (includeWords) types.push('word');
@@ -56,7 +78,7 @@ export const tokenize = ({
     tokens = tokens.map((token, index) => {
       const _occurrences = occurrencesInTokens(tokens, token.token);
       const _occurrence = occurrenceInTokens(tokens, index, token.token);
-      return { ...token, occurrence: _occurrence, occurrences: _occurrences };
+      return {...token, occurrence: _occurrence, occurrences: _occurrences};
     });
   }
   if (verbose) {
